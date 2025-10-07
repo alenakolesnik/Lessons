@@ -2,22 +2,30 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Скорость движения
-    public float Speed = 5f;
-    public float JumpForce = 300f;
+    public float Speed = 1f;
+    public float JumpForce = 1f;
+
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+    }
 
     void Update()
     {
-        // Движение влево-вправо
+        // Движение
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        transform.Translate(horizontal * Speed * Time.deltaTime, 0, vertical * Speed * Time.deltaTime);
+        Vector3 movement = new Vector3(horizontal, 0, vertical) * Speed;
+        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
 
-        // Прыжок
+        // Прыжок БЕЗ проверки земли
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * JumpForce);
+            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
     }
 }
