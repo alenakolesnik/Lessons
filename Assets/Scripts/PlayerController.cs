@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour
     public float Speed = 1f;
     public float JumpForce = 1f;
 
+    [HideInInspector]
+    public bool canMove = true; // флаг управления
+
     private Rigidbody rb;
 
     void Start()
@@ -15,6 +18,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!canMove) return; // если управление заблокировано, выходим
+
         // ��������
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
